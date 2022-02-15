@@ -2,7 +2,7 @@
 ID | NAME | PORT | TYPE | VALUES | 
 --- | --- | --- | --- | --- |
 0 | [IR remote control](https://robotrack-rus.ru/wiki/doku.php/ehlektronika/du/ik_pdu) | IN1-IN8 | bool | (True, False)
-1 | [IR optocoupler](https://robotrack-rus.ru/wiki/doku.php/ehlektronika/datchiki/ik-optopara) | IN1-IN8 | int/bool | (0-1023)/(True, False)
+1 | [IR optocoupler](https://robotrack-rus.ru/wiki/doku.php/ehlektronika/datchiki/ik-optopara) | IN1-IN8 | int/bool/bool | (0-1023)/(True, False)/(True, False)
 2 | [Color sensor](https://robotrack-rus.ru/wiki/doku.php/ehlektronika/datchiki/datchik_cveta) | IN1-IN8 | int | (0-4, 9)
 3 | [Distance sensor](https://robotrack-rus.ru/wiki/doku.php/ehlektronika/datchiki/ulrazvukovoj_datchik_rasstojanija) | IN1-IN8 | int | (2-300)
 4 | [Light sensor](https://robotrack-rus.ru/wiki/doku.php/ehlektronika/datchiki/datchik_osveschennosti) | IN1-IN8 | int/bool | (0-1023)/(True, False)
