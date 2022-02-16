@@ -16,33 +16,53 @@ void setup()
     while (WiFi.status() != WL_CONNECTED) {
       delay(1000);  
     }
-    Register();
+
+    String registerMessageFromSensors = "";
+    String registerMessageToSensors = "Init1";
+    while (registerMessageFromSensors == "") {
+      Serial.println(registerMessageToSensors);
+      delay(500);
+      registerMessageFromSensors = Serial.readString();
+    }
+    Serial.println(registerMessageFromSensors);
+    Serial.println("Allright1");
+    Register(registerMessageFromSensors);
+    Serial.println("Allright3");
 }
 
 void loop()
 {
-    updateData();
-    delay(500);
+  String data = "";
+  if (Serial.available()) {
+    data = Serial.readString();
+    updateData(data);
+  }
+  delay(500);
 }
 
-void updateData()
+void updateData(String data)
 {
     if ((WiFiMulti.run() == WL_CONNECTED))
     {
         WiFiClient client;
         HTTPClient http;
 
+        char str[data.length()];
+        data.toCharArray(str, data.length()); // todo: Убрать костыль!!!!
+        data = String(str);
+        data = data.substring(0, data.length() - 1);
+
+
         if (http.begin(client, "http://194.58.107.109:8080/W/Ping"))
         {
 
             http.addHeader("Content-Type", "application/json");
-            String data = "";
-            if (Serial.available()) {
-              data = Serial.readString();
-            }
             String postData = "{\"user\": \"Me\",\"password\": \"123\",\"data\": \"" + data + "\"}";
 
+            Serial.println(postData);
+
             int httpCode = http.POST(postData);
+            Serial.println(httpCode);
             if (httpCode > 0)
             {
                 if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY)
@@ -63,22 +83,25 @@ void getDataFromServer(String data) {
   Serial.println(data);
 }
 
-void Register()
+void Register(String data)
 {
     if ((WiFiMulti.run() == WL_CONNECTED))
     {
         WiFiClient client;
         HTTPClient http;
 
-        String data = "0:B1";
-        if (Serial.available()) {
-          data = Serial.readString();
-        }
+        char str[data.length()];
+        
+        data.toCharArray(str, data.length());
+
+        data = String(str);
+  
+        Serial.println("http://194.58.107.109:8080/W/Register?d=Me|123|" + data);
 
         String url = "http://194.58.107.109:8080/W/Register?d=Me|123|" + data;
         if (http.begin(client, url))
         {
-            http.GET();
+            Serial.println(http.GET());
             http.end();
         }
     }
