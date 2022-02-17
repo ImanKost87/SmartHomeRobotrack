@@ -70,17 +70,13 @@ void updateData(String data)
                     String payload = http.getString();
                     if(payload != "")
                     {
-                      getDataFromServer(payload);
+                      Serial.println(payload);
                     }
                 }
             }
             http.end();
         }
     }
-}
-
-void getDataFromServer(String data) {
-  Serial.println(data);
 }
 
 void Register(String data)
