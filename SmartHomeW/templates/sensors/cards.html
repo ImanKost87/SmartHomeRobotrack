@@ -1,0 +1,111 @@
+{% extends 'sensors/base.html' %}
+
+{% block input_data %}
+<div class="sensors-container">
+    <h2 class="sensors-header">
+        Полученные данные с датчиков
+        <hr class="sensors-line">
+    </h2>
+    <div class="row" id="input-data">
+            {% if in_data %}
+                {% for label, info in in_data.items %}
+                    <div class="card">
+                        <div class="card-header">{{ info.2 }}</div>
+                        <div class="card-main">
+                            <i class="material-icons">{{ info.0 }}</i>
+                            <div class="main-description">{{ label }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Данных с датчиков нет</p>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block output_data %}
+    <div class="sensors-container">
+        <h2 class="sensors-header">
+            Данные для отправки датчикам
+            <hr class="sensors-line">
+        </h2>
+        <div class="row" id="output-data">
+            {% if out_data %}
+                {% for label, info in out_data.items %}
+                    <div class="card" id="red-border">
+                        <div class="card-main">
+                            <i class="material-icons" id="red-color">{{ info.0 }}</i>
+                            <div class="main-description" id="red-color">{{ label }}</div>
+                        </div>
+                        <footer class="card-header" id="red-header">
+                            <label for="result"></label>
+                            <input id="result" type="text" name="result-{{ info.1 }}" class="result-{{ info.1 }}">
+                            <input type="submit" onclick="get_out_data()">
+                        </footer>
+                    </div>
+            {% endfor %}
+        {% else %}
+            <p>Подключенных датчиков нет</p>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scrips %}
+    <script>
+        function get_out_data() {
+            var inputs_string = [];
+            {% if out_data %}
+                {% for label, info in out_data.items %}
+                    var sensor = '{\"type\": ' + '\"{{ info.3 }}\"' + ', \"port\": ' + '\"{{ info.1 }}\"' + ', \"value\": ' +  '\"' + $(".result-{{ info.1 }}").val() + '\"' + '}'
+                    inputs_string.push(sensor);
+                {% endfor %}
+            {% endif %}
+            console.log(inputs_string);
+            $.ajax({
+                method: 'POST',
+                url: "{% url 'send_data' %}",
+                dataType: 'text',
+                data:  '{\"user\": ' + "\"{{ user.username }}\", \"data\": [" +  inputs_string + "]}",
+                success: function () {
+                    console.log("YEEEEEE");
+                },
+                error: function () {
+                    console.log("NOOOOOO");
+                }
+            });
+        }
+
+        var socket = new WebSocket('ws://' + window.location.host + '/ws/get_data/');
+
+        socket.onmessage = function (event) {
+            var div_string = '';
+
+            console.log('receive')
+            var data = JSON.parse(event.data);
+            data = JSON.parse(data.replace(/'/g, '"'));
+            var keys = Object.keys(data);
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                var arr = data[key];
+                div_string += '<div class="card">' +
+                        '<div class="card-header">' + arr[2] + '</div>' +
+                        '<div class="card-main">' +
+                            '<i class="material-icons">' + arr[0] + '</i>' +
+                            '<div class="main-description">' + key + '</div>' +
+                        '</div>' +
+                    '</div>';
+            }
+            document.getElementById("input-data").innerHTML = div_string;
+        }
+
+        socket.onopen = function (event) {
+            console.log("Open");
+        }
+
+        socket.onclose = function (event) {
+            console.log("Close");
+        }
+    </script>
+{% endblock %}

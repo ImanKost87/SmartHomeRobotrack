@@ -1,0 +1,145 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+  background-color: #0c5460;
+}
+
+.header a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.header a.logo {
+  width: 100px;
+  height: 60px;
+}
+
+.header a.logo img {
+  width: 100%;
+  height: auto;
+}
+
+.header a:hover {
+  background-color: gray;
+  color: black;
+}
+
+.header-btns {
+  float: right;
+  margin-top: 15px;
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .header-right {
+    float: none;
+  }
+}
+
+.header a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+hr.sensors-line {
+  border: 2px solid gray;
+  border-radius: 1px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  /*justify-content: center;*/
+  align-items: center;
+  padding: 5px 5px;
+}
+
+.card {
+  width: calc(300px - 10px);                 /* Set width of cards */
+  display: flex;                /* Children use Flexbox */
+  flex-direction: column;       /* Rotate Axis */
+  border: 1px solid #80DEEA;    /* Set up Border */
+  border-radius: 4px;           /* Slightly Curve edges */
+  overflow: hidden;             /* Fixes the corners */
+  margin: 5px;                  /* Add space between cards */
+}
+
+.card-header {
+  color: #0097A7;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #80DEEA;
+  background-color: #E0F7FA;
+  padding: 5px 10px;
+}
+
+.card-main {
+  display: flex;              /* Children use Flexbox */
+  flex-direction: column;     /* Rotate Axis to Vertical */
+  justify-content: center;    /* Group Children in Center */
+  align-items: center;        /* Group Children in Center (on cross axis) */
+  padding: 15px 0;            /* Add padding to the top/bottom */
+}
+
+.material-icons {
+  font-size: 36px;
+  color: #0097A7;
+  margin-bottom: 5px;
+}
+
+.main-description {
+  color: #0097A7;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* IDs for additional colors*/
+/* Colors from Google Material Design: https://material.io/guidelines/style/color.html*/
+
+#or-border {
+  border-color: #FFE082;
+}
+
+#or-header {
+  background-color: #FFF8E1;
+  border-color: #FFE082;
+  color: #FFA000;
+}
+
+#or-color {
+  color: #FFA000;
+}
+
+#red-border {
+  border-color: #EF9A9A;
+}
+
+#red-header {
+  background-color: #FFEBEE;
+  border-color: #EF9A9A;
+  color: #D32F2F;
+}
+
+#red-color {
+  color: #D32F2F;
+}
